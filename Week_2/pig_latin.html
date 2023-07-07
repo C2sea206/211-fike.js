@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pig Latin Translator</title>
+    <script>
+      // Function to translate the input to Pig Latin
+      function pigLatinTranslator(input) {
+        // Check if the input is empty or only one character
+        if (input === "" || input.length === 1) {
+          return "Input cannot be translated.";
+        }
+
+        // Split the input into individual words
+        const words = input.split(" ");
+        const translatedWords = [];
+
+        // Iterate over each word
+        for (let word of words) {
+          // Check if the word starts with a vowel
+          if (/^[aeiou]/i.test(word)) {
+            translatedWords.push(word + "way"); // Add "way" to the end of the word
+          }
+          // Check if the word starts with two consonants
+          else if (/^[^aeiou][^aeiou]/i.test(word)) {
+            translatedWords.push(word.slice(2) + word.slice(0, 2) + "ay"); // Move the first two consonants to the end and add "ay"
+          }
+          // Check if the word starts with a single consonant
+          else if (/^[^aeiou]/i.test(word)) {
+            translatedWords.push(word.slice(1) + word[0] + "ay"); // Move the first consonant to the end and add "ay"
+          }
+          // If none of the above conditions are met, the word remains unchanged
+          else {
+            translatedWords.push(word);
+          }
+        }
+
+        // Join the translated words back into a sentence
+        return translatedWords.join(" ");
+      }
+
+      // Function to handle the translation when the button is clicked
+      function translateToPigLatin() {
+        const userInput = document.getElementById("input").value; // Get the user input from the input field
+        const translation = pigLatinTranslator(userInput); // Translate the input using the pigLatinTranslator function
+        document.getElementById("output").textContent = translation; // Display the translation in the output paragraph
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Pig Latin Translator</h1>
+    <label for="input">Enter a sentence to translate to Pig Latin:</label>
+    <input type="text" id="input" />
+    <!-- Input field for the user to enter a sentence -->
+    <button onclick="translateToPigLatin()">Translate</button>
+    <!-- Button to trigger the translation -->
+    <p id="output"></p>
+    <!-- Paragraph to display the translated output -->
+  </body>
+</html>
