@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Importing jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+  </head>
+  <body>
+    <!-- Game Title -->
+    <h1>Robo Dealer</h1>
+    <!-- Button to deal a new hand -->
+    <button onclick="dealHand();">Deal Hand</button>
+    <hr />
+    <!-- Container to display the card hand -->
+    <div id="card_hand"></div>
+
+    <script>
+      // Card class representing a playing card
+      class Card {
+        constructor(value, suit) {
+          this.value = value;
+          this.suit = suit;
+        }
+
+        // Method to get the name of the card (e.g., "Ace", "King", etc.)
+        getName() {
+          if (this.value === 1) return "Ace";
+          else if (this.value === 11) return "Jack";
+          else if (this.value === 12) return "Queen";
+          else if (this.value === 13) return "King";
+          else return this.value;
+        }
+      }
+
+      // Array to hold the deck of cards
+      const deck = [];
+      // Array of suits in a standard deck
+      const suits = ["Spades", "Hearts", "Diamonds", "Clubs"];
+
+      // Generating the deck of cards by combining values and suits
+      for (let value = 1; value <= 13; value++) {
+        for (const suit of suits) {
+          deck.push(new Card(value, suit));
+        }
+      }
+
+      // Set to keep track of cards that have been shown
+      const shownCards = new Set();
+
+      // Function to draw a hand of 5 random cards
+      const drawCardHand = () => {
+        // Getting the container element for the card hand
+        const cardContainer = document.getElementById("card_hand");
+        // Clearing previous hand if any
+        cardContainer.innerHTML = "";
+
+        // Array to store the cards in the hand
+        const hand = [];
+        // Continue drawing cards until we have 5 unique cards in the hand
+        while (hand.length < 5) {
+          // Generate a random index to pick a card from the deck
+          const randomIndex = Math.floor(Math.random() * deck.length);
+          // Get the card at the random index
+          const card = deck[randomIndex];
+          // Check if the card has not been shown before
+          if (!shownCards.has(card)) {
+            // Add the card to the hand and mark it as shown
+            hand.push(card);
+            shownCards.add(card);
+          }
+        }
+
+        // Display each card in the hand on the web page
+        for (const card of hand) {
+          const cardName = card.getName();
+          const cardElement = document.createElement("p");
+          cardElement.textContent = `${cardName} of ${card.suit}`;
+          cardContainer.appendChild(cardElement);
+        }
+      };
+
+      // Function to handle the "Deal Hand" button click
+      const dealHand = () => {
+        // Reset the shownCards set to start a new hand
+        resetShownCards();
+        // Draw a new hand of cards
+        drawCardHand();
+      };
+
+      // Function to reset the shownCards set
+      const resetShownCards = () => {
+        shownCards.clear();
+      };
+    </script>
+  </body>
+</html>
