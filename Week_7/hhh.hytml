@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Harry Potter Characters</title>
+    <!-- Include jQuery library from a CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        /* Styling for the table */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 1px solid #ddd;
+        }
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        /* Hidden class for hiding table rows */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="buttons"></div>
+    <!-- Table for displaying character information -->
+    <table id="characterTable" border="1">
+        <thead>
+            <tr>
+                <th>name</th>
+                <th>role</th>
+                <th>house</th>
+                <th>gender</th>
+                <th>alignment</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Table rows will be generated here -->
+        </tbody>
+    </table>
+    <!-- Button to reset filters -->
+    <button id="resetButton">Reset</button>
+
+    <script>
+        // Array of Harry Potter characters with their attributes
+        var characters = [
+            // Character objects...
+        ];
+
+        $(document).ready(function () {
+            // Find unique house values from characters
+            var uniqueHouses = [...new Set(characters.map(character => character.house))];
+            var tableBody = $("#characterTable tbody");
+            var buttonsDiv = $("#buttons");
+
+            // Generate house filter buttons programmatically
+            uniqueHouses.forEach(function (house) {
+                var button = $("<button>").text(house).appendTo(buttonsDiv);
+                button.on("click", function () {
+                    // Hide all rows
+                    tableBody.find("tr").addClass("hidden");
+                    
+                    // Show rows for the selected house
+                    tableBody.find("tr[data-house='" + house + "']").removeClass("hidden");
+                });
+            });
+
+            // Populate table rows with character data
+            characters.forEach(function (character) {
+                var row = $("<tr>")
+                    .attr("data-house", character.house)
+                    .appendTo(tableBody);
+
+                // Add character attributes to table cells
+                $("<td>").text(character.name).appendTo(row);
+                $("<td>").text(character.role).appendTo(row);
+                $("<td>").text(character.house).appendTo(row);
+                $("<td>").text(character.gender).appendTo(row);
+                $("<td>").text(character.alignment).appendTo(row);
+            });
+
+            // Click handler for reset button to show all rows
+            $("#resetButton").on("click", function () {
+                tableBody.find("tr").removeClass("hidden");
+            });
+        });
+    </script>
+</body>
+</html>
